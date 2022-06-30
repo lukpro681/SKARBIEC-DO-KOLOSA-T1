@@ -4,7 +4,7 @@
 using namespace std;
 
 
-#define Zadanie1_4_P
+#define Zadanie2_3_K1
 
 #ifdef Zadanie1_4_P
 
@@ -23,21 +23,21 @@ struct Osoba
 	StanCywilny stan;
 };
 
-short koder(Osoba o){
+short koder(Osoba &o){
 	short kod{};
 	kod += o.wiek;
-	kod = kod << 4;
+	kod = kod << 1;
 	kod += (int)o.plec;
-	kod = kod << 3;
+	kod = kod << 2;
 	kod += (int)o.stan;
 	return kod;
 }
 
 void dekoder(short kod, int& wiek, Plec& plec, StanCywilny& stan) {
-	stan = (StanCywilny)(kod % 8);
-	kod = kod >> 3;
-	plec = (Plec)(kod % 16);
-	kod = kod >> 4;
+	stan = (StanCywilny)(kod % 4);
+	kod = kod >> 2;
+	plec = (Plec)(kod % 2);
+	kod = kod >> 1;
 	wiek = (int)(kod % 128);
 }
 
@@ -236,24 +236,30 @@ class Kierowca
 private:
 	int m_staz;
 	KatPJ m_uprawnienie;
-	Kierowca* m_kierowca;
+	static Kierowca* m_kierowca;
 public:
 	void setUprawnienie(KatPJ i_upr) { m_uprawnienie = i_upr; }
 	KatPJ getUprawnienie() { return m_uprawnienie; }
 	int getStaz() { return m_staz; }
 	void zwiekszStaz() { m_staz++; }
 
+	static void setWzor(Kierowca* k) {
+		m_kierowca = k;
+	}
+
 	bool sprawdzenie() {
-		if (this == m_kierowca)
-			return true;
-		else return false;
+		return (m_staz == m_kierowca->m_staz && m_uprawnienie == m_kierowca->m_uprawnienie);
 	}
 
 	Kierowca()
 	{
-		if (m_kierowca != nullptr) {
+		if (m_kierowca == nullptr) {
 			setUprawnienie(KatPJ::B);
 			m_staz = 0;
+		}
+		else {
+			m_uprawnienie = m_kierowca->m_uprawnienie;
+			m_staz = m_kierowca->m_staz;
 		}
 	}
 	Kierowca(int staz, KatPJ upr)
@@ -262,6 +268,8 @@ public:
 		setUprawnienie(upr);
 	}
 };
+
+Kierowca* Kierowca::m_kierowca = nullptr;
 
 
 #endif
@@ -309,24 +317,31 @@ public:
 class Wypozyczenie
 {
 private:
-	int m_idWypozyczenia;
-	Kierowca* m_kierowca = {};
-	Motor* m_motor = {};
+	Kierowca* m_kierowca = nullptr;
+	Motor* m_motor = nullptr;
 public:
-	void setID(int ID) { m_idWypozyczenia = system("%random%"); }
-	int getID() { return m_idWypozyczenia; }
-	int odczytajStaz(Kierowca& k)
-	{
-		return k.getStaz();
-	}
-	const char* odczytajNumery(Motor& m)
-	{
-		return m.getNumerRej();
+
+	void setWypozyczenie(Kierowca* k, Motor* m) {
+		if(k->getUprawnienie() == KatPJ::A)
+		m_kierowca = k; m_motor = m;
 	}
 
-	bool weryfikacja(Kierowca& k)
+	Wypozyczenie(Kierowca* k, Motor* m) {
+		setWypozyczenie(k, m);
+	}
+
+	int odczytajStaz()
 	{
-		if (k.getUprawnienie() != KatPJ::A) {
+		return m_kierowca->getStaz();
+	}
+	const char* odczytajNumery()
+	{
+		return m_motor->getNumerRej();
+	}
+
+	bool weryfikacja()
+	{
+		if (m_kierowca->getUprawnienie() != KatPJ::A) {
 			m_kierowca = nullptr;
 			return false;
 		}

@@ -220,6 +220,52 @@ int main()
 }
 #endif
 
+#ifdef Zadanie2_2_P
+
+
+
+#endif
+
+#ifdef Zadanie2_2_K1
+
+enum class KatPJ { A, B, C, D };
+enum class TypMotoru { scigacz, crossowy, chopper };
+
+class Kierowca
+{
+private:
+	int m_staz;
+	KatPJ m_uprawnienie;
+	Kierowca* m_kierowca;
+public:
+	void setUprawnienie(KatPJ i_upr) { m_uprawnienie = i_upr; }
+	KatPJ getUprawnienie() { return m_uprawnienie; }
+	int getStaz() { return m_staz; }
+	void zwiekszStaz() { m_staz++; }
+
+	bool sprawdzenie() {
+		if (this == m_kierowca)
+			return true;
+		else return false;
+	}
+
+	Kierowca()
+	{
+		if (m_kierowca != nullptr) {
+			setUprawnienie(KatPJ::B);
+			m_staz = 0;
+		}
+	}
+	Kierowca(int staz, KatPJ upr)
+	{
+		m_staz = staz;
+		setUprawnienie(upr);
+	}
+};
+
+
+#endif
+
 #ifdef Zadanie2_3_P
 
 
@@ -228,18 +274,66 @@ int main()
 
 #ifdef Zadanie2_3_K1
 
-
-
-#endif
-
-#ifdef Zadanie2_4_P
+enum class KatPJ { A, B, C, D };
+enum class TypMotoru { scigacz, crossowy, chopper };
 
 
 
-#endif
+class Kierowca
+{
+private:
+	int m_staz;
+	KatPJ m_uprawnienie;
+public:
+	void setUprawnienie(KatPJ i_upr) { m_uprawnienie = i_upr; }
+	KatPJ getUprawnienie() { return m_uprawnienie; }
+	int getStaz() { return m_staz; }
+	void zwiekszStaz() { m_staz++; }
+};
 
-#ifdef Zadanie2_3_K1
+class Motor
+{
+private:
+	double m_predkosc;
+	char m_numerRej[9];
+	TypMotoru m_typ;
+public:
+	void setPredkosc(double i_pred) { m_predkosc = (i_pred > 260) ? i_pred : 260; }
+	void setNumerRej(const char* i_num) { strncpy(m_numerRej, i_num, 8); }
+	void setTypMotoru(TypMotoru typ) { m_typ = typ; }
+	const char* getNumerRej() { return m_numerRej; }
+	double getPredkosc() { return m_predkosc; }
+	TypMotoru getTypMotoru() { return m_typ; }
+};
 
+class Wypozyczenie
+{
+private:
+	int m_idWypozyczenia;
+	Kierowca* m_kierowca = {};
+	Motor* m_motor = {};
+public:
+	void setID(int ID) { m_idWypozyczenia = system("%random%"); }
+	int getID() { return m_idWypozyczenia; }
+	int odczytajStaz(Kierowca& k)
+	{
+		return k.getStaz();
+	}
+	const char* odczytajNumery(Motor& m)
+	{
+		return m.getNumerRej();
+	}
+
+	bool weryfikacja(Kierowca& k)
+	{
+		if (k.getUprawnienie() != KatPJ::A) {
+			m_kierowca = nullptr;
+			return false;
+		}
+		else return true;
+	}
+
+};
 
 
 #endif

@@ -1,0 +1,4 @@
+﻿  Main.cpp
+C:\Users\lukus\source\repos\KOLOKWIUM BLOK 1 i 2\Main.cpp(48,23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\lukus\source\repos\KOLOKWIUM BLOK 1 i 2\Main.cpp(70,23): warning C4018: "<=": niezgodność typu ze znakiem/bez znaku
+  KOLOKWIUM BLOK 1 i 2.vcxproj -> C:\Users\lukus\source\repos\KOLOKWIUM BLOK 1 i 2\Debug\KOLOKWIUM BLOK 1 i 2.exe

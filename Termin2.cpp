@@ -141,7 +141,6 @@ public:
         return licznik;
     }
 };
-
 #endif
 
 #ifdef War3

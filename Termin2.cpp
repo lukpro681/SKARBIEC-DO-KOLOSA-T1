@@ -143,9 +143,62 @@ public:
 };
 #endif
 
-#ifdef War3
+#ifdef War3 //na 6
 
+class Kierowca
+{
+private:
+	int m_staz{};
+	KatPJ m_uprawnienie;
+public:
+	void setUprawnienie(KatPJ i_upr) { m_uprawnienie = i_upr; }
+	KatPJ getUprawnienie() { return m_uprawnienie; }
+	int getStaz() { return m_staz; }
+	void zwiekszStaz() { m_staz++; }
+};
 
+class Motor
+{
+private:
+	double m_predkosc;
+	char m_numerRej[9];
+public:
+	void setPredkosc(double i_pred) { m_predkosc = (i_pred > 260) ? i_pred : 260; }
+	void setNumerRej(const char* i_num) { strncpy(m_numerRej, i_num, 8); }
+	const char* getNumerRej() { return m_numerRej; }
+	double getPredkosc() { return m_predkosc; }
+};
+
+class Wypozyczenie
+{
+private:
+	Motor* motocykl{};
+	Kierowca* kierowca{};
+public:
+	Wypozyczenie(Motor* _motor, Kierowca* _kierowca)
+		:motocykl(_motor) {
+		setKierowca(_kierowca);
+	}
+	void setKierowca(Kierowca* _kierowca) {
+		if (_kierowca->getUprawnienie() == KatPJ::A)
+			kierowca = _kierowca;
+	}
+	void setMotor(Motor* _motor) { motocykl = _motor; }
+	const char* getNrRej() {
+		return motocykl->getNumerRej();
+	}
+	int getStaz() {
+		return kierowca->getStaz();
+	}
+	bool sprawdzenie() {
+		if (kierowca->getUprawnienie() != KatPJ::A)
+		{
+			kierowca = nullptr;
+			return false;
+		}
+		return true;
+	}
+};
 
 #endif
 

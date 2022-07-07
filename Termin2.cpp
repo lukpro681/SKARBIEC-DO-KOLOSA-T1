@@ -202,14 +202,99 @@ public:
 
 #endif
 
-#ifdef War4
+#ifdef War4 // Asocjacja
 
+enum class KatPJ { A, B, C, D };
 
+class Kierowca
+{
+private:
+	int m_staz;
+	KatPJ m_uprawnienie;
+
+public:
+	void setUprawnienie(KatPJ i_upr) { m_uprawnienie = i_upr; }
+	KatPJ getUprawnienie() { return m_uprawnienie; }
+	int getStaz() { return m_staz; }
+	void zwiekszStaz() { m_staz++; }
+};
+
+class Motor
+{
+private:
+	double m_predkosc;
+	char m_numerRej[9];
+	Kierowca* m_kierowca = nullptr;
+public:
+	void przypiszKierowce(Kierowca* k)
+	{
+		if (m_kierowca == nullptr)
+		{
+			if (k->getUprawnienie() == KatPJ::A)
+			{
+				m_kierowca = k;
+			}
+			else throw invalid_argument("BRAK KATEGORII");
+		}
+		else throw invalid_argument("Przypisanie ju¿ istnieje");
+	}
+	void zerwijass() {
+		m_kierowca = nullptr;
+	}
+	Kierowca* kierowca() { return m_kierowca; }
+	void setPredkosc(double i_pred) { m_predkosc = (i_pred > 260) ? i_pred : 260; }
+	void setNumerRej(const char* i_num) { strncpy(m_numerRej, i_num, 8); }
+	const char* getNumerRej() { return m_numerRej; }
+	double getPredkosc() { return m_predkosc; }
+	Motor(double p, const char* nrR, Kierowca* k) {
+		setPredkosc(p);
+		setNumerRej(nrR);
+		przypiszKierowce(k);
+	}
+	int pokazstaz()
+	{
+		if (m_kierowca != nullptr) {
+			return m_kierowca->getStaz();
+		}
+		else return -1;
+	}
+};
+
+int main() {
+	Kierowca k;
+	k.setUprawnienie(KatPJ::A);
+	Motor m(320.0, "JBC PIS", &k); // Jak-By Co PIS...    ...powoduje b³ad kompilacji
+
+}
 
 #endif
 
 #ifdef War5
 
 
+
+#endif
+
+#ifdef Algorytmy
+
+//algorytm.edu.pl
+#include<iostream>
+using namespace std;
+
+int main1() //Wyszukiwanie najmniejszej wartoœci tablicy
+{
+	//inicjacja tablicy z przyk³adowymi danymi
+	int min, tab[] = { 2, 3, 6, 7, 8, 7, 4, 3, 1, 7 };
+
+	min = tab[0]; //pierwsz¹ liczbê przypisujemy do zmiennej min
+
+	for (int i = 1; i < 10; i++) //przeszukanie pozosta³ych 9 liczb
+		if (min > tab[i])
+			min = tab[i];
+
+	cout << "Najmniejsz¹ wczytan¹ liczb¹ jest " << min << endl;
+
+	return 0;
+}
 
 #endif
